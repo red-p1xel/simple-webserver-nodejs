@@ -1,0 +1,14 @@
+services:
+  node:
+    image: "node:latest"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NPM_CONFIG_LOGLEVEL=${LOG_LEVEL}
+    volumes:
+      - ./:/home/node/app
+    ports:
+      - ${PORT}:${PORT}
+    command: "npm run start:dev"
+    env_file:
+      - .env
