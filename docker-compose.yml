@@ -2,11 +2,11 @@ services:
   node:
     image: "node:latest"
     user: "node"
-    working_dir: /home/node/app
+    working_dir: /home/app
     environment:
       - NPM_CONFIG_LOGLEVEL=${LOG_LEVEL}
     volumes:
-      - ./:/home/node/app
+      - ./:/home/app
     ports:
       - ${PORT}:${PORT}
     command: "npm run start:dev"
