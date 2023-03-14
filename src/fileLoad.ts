@@ -1,7 +1,19 @@
-import path from 'path';
-import { promises as fs } from 'fs';
+import path from 'node:path';
+import fs from 'node:fs/promises';
 
-let files: any = [];
+interface FileData <T, S> {
+  path: T,
+  content: S
+}
+
+/* The following example also can suitable to declare array of FileData objects instead of interface which declared above
+  type FileData = {
+    path: string,
+    content: Buffer
+  };
+*/
+
+let files: Array<FileData<string, Buffer>> = [];
 
 export interface File {
   dir: string;
