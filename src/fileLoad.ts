@@ -1,9 +1,9 @@
 import path from 'node:path';
 import fs from 'node:fs/promises';
 
-interface FileData <T, S> {
-  path: T,
-  content: S
+export interface FileData<T, S> {
+  path: T;
+  content: S;
 }
 
 /* The following example also can suitable to declare array of FileData objects instead of interface which declared above
