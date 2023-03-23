@@ -1,41 +1,47 @@
 import crypto from 'node:crypto';
 import { createSign, createVerify } from 'crypto';
-
-let publicKey: crypto.KeyObject;
-let privateKey: crypto.KeyObject;
+import { FileData } from './fileLoad';
 
 let signature: string;
 let isVerified: boolean;
 
-export function keyPairVerifier(data: object) {
-  const keys = Object.values(data).splice(0, 1)[0];
+export interface ServerKeys {
+  key?: Buffer;
+  cert?: Buffer;
+}
 
-  for (const key of keys) {
-    if (key.data.startsWith('-----BEGIN PRIVATE KEY-----')) {
-      privateKey = crypto.createPrivateKey(key.data);
+export function keyPairVerifier(
+  data: Array<FileData<string, Buffer>>
+): ServerKeys {
+  const options: ServerKeys = {};
+  let publicKey: crypto.KeyObject;
+  let privateKey: crypto.KeyObject;
+
+  for (const key of data) {
+    if (key.content.toString().startsWith('-----BEGIN PRIVATE KEY-----')) {
+      privateKey = crypto.createPrivateKey(key.content);
       const sign = createSign('SHA256');
       sign.write('--`.++.`--');
       sign.end();
       signature = sign.sign(privateKey, 'hex');
+      options.key = key.content;
     }
 
-    if (key.data.startsWith('-----BEGIN CERTIFICATE-----')) {
-      publicKey = crypto.createPublicKey(key.data);
+    if (key.content.toString().startsWith('-----BEGIN CERTIFICATE-----')) {
+      publicKey = crypto.createPublicKey(key.content);
       const verify = createVerify('SHA256');
       verify.write('--`.++.`--');
       verify.end();
       isVerified = verify.verify(publicKey, signature, 'hex');
+      options.cert = key.content;
 
       console.info(
         `--::::--[ SSL CERTIFICATES VERIFICATION STATUS ::-> ${isVerified}`
       );
     }
 
-    // Break when first founded keypair is completely verified
     if (isVerified) break;
   }
 
-  return isVerified;
+  return options;
 }
-
-// TODO: Implement feature generate keypair
