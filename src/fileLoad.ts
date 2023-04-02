@@ -15,7 +15,10 @@ export interface FileData<T, S> {
 
 let files: Array<FileData<string, Buffer>> = [];
 
-export async function loadFiles(dir: string, extensions?: string[]) {
+export async function loadFiles(
+  dir: string,
+  extensions?: string[]
+): Promise<Array<FileData<string, Buffer>>> {
   const targetDir = await fs.readdir(dir);
 
   for (const item of targetDir) {
