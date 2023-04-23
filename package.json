@@ -1,7 +1,7 @@
 {
-  "name": "express-ts-docker-starter",
+  "name": "simple-webserver-nodejs",
   "version": "1.0.2",
-  "description": "Dockerized NodeJS and TypeScript application",
+  "description": "Simple WebServer (NodeJS, TypeScript)",
   "keywords": [],
   "author": "Vadym Panchenko",
   "license": "MIT",
